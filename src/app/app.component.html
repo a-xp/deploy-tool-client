@@ -1,0 +1,29 @@
+<!--The whole content below can be removed with the new code.-->
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <nav class="navbar navbar-inverse bg-primary navbar-toggleable-md">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+          data-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#"><i class="fa fa-universal-access"></i> SOA Deploy Tool</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link" routerLink="/projects" routerLinkActive="active">Проекты</a>
+            <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Пользователи</a>
+            <a class="nav-item nav-link" routerLink="/config" routerLinkActive="active">Конфигурация</a>
+            <a class="nav-item nav-link" routerLink="/status" routerLinkActive="active">Статус</a>
+            <a class="nav-item nav-link" routerLink="/profile" routerLinkActive="active">Профиль</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <div class="p-2">
+    <alert></alert>
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
