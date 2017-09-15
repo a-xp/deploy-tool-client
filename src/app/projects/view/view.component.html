@@ -1,0 +1,69 @@
+<div *ngIf="!project"><i class="fa fa-spinner fa-4x fa-spin"></i> Загрузка</div>
+<div *ngIf="project">
+
+  <h2 class="p-3">{{project.name}}</h2>
+  <small>{{project.description}}</small>
+
+  <div class="card mb-2">
+    <div class="card-header">Активные экземпляры</div>
+    <div class="card-block">
+
+        <table class="table table-striped table-bordered">
+          <tr><th>Сервер</th><th>Версия</th><th>PID</th><th>Порт</th><th>Статус</th><th></th></tr>
+          <tr><td>MW-1</td><td class="text-primary">1.3.244</td><td>5190</td><td>54209</td><td class="text-success">Запущено 24 дн. 7 ч.</td><td><button type="button" class="btn btn-sm btn-danger"><i class="fa fa-remove"></i> Остановить</button> <button type="button" class="btn btn-sm btn-secondary"><i class="fa fa-refresh"></i> Обновить конфигурацию</button></td></tr>
+          <tr><td>MW-2</td><td class="text-primary">1.3.244</td><td>251</td><td></td><td class="text-warning">Запускается</td><td> <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-remove"></i> Остановить</button></td></tr>
+          <tr><td>MW-1</td><td class="text-warning">1.3.301 [QA]</td><td>754</td><td>1076</td><td class="text-success">Запущено 2 ч. 23 мин.</td><td> <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-remove"></i> Остановить</button> <button type="button" class="btn btn-sm btn-secondary"><i class="fa fa-refresh"></i> Обновить конфигурацию</button></td></tr>
+        </table>
+
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header">Билды</div>
+    <div class="card-block">
+      <table class="table table-bordered table-striped">
+        <tr><th>Версия</th><th>Дата</th><th>Автор</th><th>Комментарий</th><th></th></tr>
+        <tr *ngFor="let build of builds"><td>{{build.version}}</td><td>{{build.date|date:'yyyy-MM-dd HH:mm:ss'}}</td><td>{{build.author}}</td><td>
+          {{build.message}}
+          <ul class="list-unstyled">
+            <li *ngFor="let task of build.features"><a target="_blank" [attr.href]="redmineIssuesUrl+task.id">{{task.name}}</a></li>
+          </ul>
+        </td>
+        <td>
+          <span *ngIf="hasFlag(build, 'RUNNING')" class="text-info"><i class="fa fa-rocket"></i></span>
+          <span *ngIf="hasFlag(build, 'AUTOSTART')" class="text-success"><i class="fa fa-check"></i> Автозапуск</span>
+          <button *ngIf="hasRight('RUN_SERVICE')" class="btn btn-sm btn-success"><i class="fa fa-rocket"></i> Запуск</button>
+          <button *ngIf="hasFlag(build, 'HAS_JAR') && hasRight('RUN_SERVICE')" class="btn btn-sm btn-warning"><i class="fa fa-trash"></i> </button>
+          <button *ngIf="hasFlag(build, 'HAS_LOG') && hasRight('VIEW_LOG')" class="btn btn-sm btn-secondary"><i class="fa fa-search"></i> Логи</button>
+        </td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header">QA Билды</div>
+    <div class="card-block">
+      <table class="table table-bordered table-striped">
+        <tr><th>Код</th><th>Задачи</th><th></th></tr>
+        <tr *ngFor="let build of qaBuilds">
+          <td>{{build.env}}</td>
+          <td><ul class="list-unstyled">
+            <li *ngFor="let task of build.features"><a target="_blank" [attr.href]="redmineIssuesUrl+task.id">#{{task.id}} {{task.name}}</a></li>
+          </ul></td>
+          <td>
+            <div *ngIf="hasRight('RUN_SERVICE')" class="btn-group" ngbDropdown>
+              <button class="btn btn-sm btn-success"><i class="fa fa-rocket"></i> Запуск</button>
+              <button class="btn btn-sm btn-success dropdown-toggle-split" ngbDropdownToggle></button>
+              <div class="dropdown-menu" ngbDropdownMenu>
+                <button class="dropdown-item">на MW-1</button>
+                <button class="dropdown-item">на MW-2</button>
+              </div>
+            </div>
+
+            <button *ngIf="hasFlag(build, 'HAS_LOG') && hasRight('VIEW_LOG')" class="btn btn-sm btn-secondary"><i class="fa fa-search"></i> Логи</button>
+            <span *ngIf="hasFlag(build, 'RUNNING')" class="text-info"><i class="fa fa-rocket"></i></span>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

@@ -19,10 +19,22 @@ import {AlertService} from "./alert.service";
 import {AuthHttpService} from "./auth-http.service";
 import {AuthenticationService} from "./authentication.service";
 import { ByTypePipe } from './projects/by-type.pipe';
+import {Broadcaster} from "./broadcaster";
+import {ProfileService} from "./profile.service";
+import { ViewComponent } from './projects/view/view.component';
+import { ListComponent } from './projects/list/list.component';
+import {BuildService} from "./build.service";
 
 const appRoutes: Routes = [
   {path:'', redirectTo:'projects', pathMatch:'full'},
-  {path:'projects', component: ProjectsComponent},
+  {path:'projects', component: ProjectsComponent,
+    children:[
+      {path:'', redirectTo:'list', pathMatch:'full'},
+      {path:'list', component:ListComponent},
+      {path:'new', component:NewComponent},
+      {path:':code', component:ViewComponent}
+    ]
+  },
   {path:'users', component: UsersComponent},
   {path:'status', component: StatusComponent},
   {path:'config', component: ConfigurationComponent},
@@ -41,7 +53,9 @@ const appRoutes: Routes = [
     StatusComponent,
     LoginComponent,
     AlertComponent,
-    ByTypePipe
+    ByTypePipe,
+    ViewComponent,
+    ListComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, {enableTracing:true}),
@@ -51,14 +65,17 @@ const appRoutes: Routes = [
     FormsModule
   ],
   providers: [
+      Broadcaster,
       ProjectService,
+      ProfileService,
       AlertService,
-    AuthenticationService,
+      AuthenticationService,
       {
         provide: AuthHttpService,
         deps: [XHRBackend, RequestOptions],
         useFactory: HttpFactory
-      }
+      },
+      BuildService
   ],
   bootstrap: [AppComponent]
 })

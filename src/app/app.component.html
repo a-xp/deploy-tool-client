@@ -16,6 +16,9 @@
             <a class="nav-item nav-link" routerLink="/status" routerLinkActive="active">Статус</a>
             <a class="nav-item nav-link" routerLink="/profile" routerLinkActive="active">Профиль</a>
           </div>
+          <div class="navbar-nav" style="margin-left: auto" *ngIf="profileService.user">
+            <a class="nav-item nav-link" (click)="authService.logout()" href="javascript:void(0)">Выход {{profileService.user.login}}</a>
+          </div>
         </div>
       </nav>
     </div>
