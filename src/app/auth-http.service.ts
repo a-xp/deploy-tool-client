@@ -45,7 +45,6 @@ export class AuthHttpService extends Http{
     if (error.status === 403) {
       window.location.href = '/login';
     }
-
     return Observable.throw(error._body);
   }
 

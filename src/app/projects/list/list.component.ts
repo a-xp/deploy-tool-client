@@ -3,8 +3,7 @@ import {Project, ProjectService} from "../../project.service";
 
 @Component({
   selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  templateUrl: './list.component.html'
 })
 export class ListComponent implements OnInit {
   public projects:Project[];

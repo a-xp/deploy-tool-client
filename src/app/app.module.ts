@@ -24,6 +24,10 @@ import {ProfileService} from "./profile.service";
 import { ViewComponent } from './projects/view/view.component';
 import { ListComponent } from './projects/list/list.component';
 import {BuildService} from "./build.service";
+import {RunnerService} from "./runner.service";
+import { BytesPipe } from './bytes.pipe';
+import { TimePeriodPipe } from './time-period.pipe';
+import {InstanceService} from "./instance.service";
 
 const appRoutes: Routes = [
   {path:'', redirectTo:'projects', pathMatch:'full'},
@@ -55,7 +59,9 @@ const appRoutes: Routes = [
     AlertComponent,
     ByTypePipe,
     ViewComponent,
-    ListComponent
+    ListComponent,
+    BytesPipe,
+    TimePeriodPipe
   ],
   imports: [
     RouterModule.forRoot(appRoutes, {enableTracing:true}),
@@ -75,7 +81,9 @@ const appRoutes: Routes = [
         deps: [XHRBackend, RequestOptions],
         useFactory: HttpFactory
       },
-      BuildService
+      BuildService,
+      RunnerService,
+      InstanceService
   ],
   bootstrap: [AppComponent]
 })

@@ -3,8 +3,7 @@ import {ProjectService, Project} from "../project.service";
 
 @Component({
   selector: 'app-projects',
-  templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.css']
+  templateUrl: './projects.component.html'
 })
 export class ProjectsComponent implements OnInit {
   constructor() { }
