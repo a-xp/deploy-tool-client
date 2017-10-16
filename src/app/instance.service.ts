@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
-import {AuthHttpService} from "./auth-http.service";
 import 'rxjs/add/operator/toPromise';
+import {HttpClient} from "@angular/common/http";
+
 
 @Injectable()
 export class InstanceService {
 
-  constructor(private http:AuthHttpService) {
+  constructor(private http:HttpClient) {
   }
 
   public getForProject(id:number):Promise<Instance[]>{
-    return this.http.get("http://127.0.0.1:9000/projects/"+id+"/instances").toPromise()
-        .then(res=>res.json().map(v=>new Instance(v)))
+    return this.http.get<Instance[]>("http://127.0.0.1:9000/projects/"+id+"/instances").toPromise()
+        .then(res=>res.map(v=>new Instance(v)))
   }
 
 }

@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {Build, BuildService} from "../../build.service";
-import {Project, ProjectService} from "../../project.service";
-import {ProfileService} from "../../profile.service";
-import {RunnerService, Runner} from "../../runner.service";
-import {Instance, InstanceService} from "../../instance.service";
+import {Build, BuildService} from "../../../build.service";
+import {Project, ProjectService} from "../../../project.service";
+import {ProfileService} from "../../../profile.service";
+import {RunnerService, Runner} from "../../../runner.service";
+import {Instance, InstanceService} from "../../../instance.service";
 
 @Component({
   selector: 'app-view',
-  templateUrl: './view.component.html'
+  templateUrl: 'view.component.html'
 })
-export class ViewComponent implements OnInit {
+export class ProjectViewComponent implements OnInit {
 
   public code:string;
   public project:Project;
@@ -44,5 +44,10 @@ export class ViewComponent implements OnInit {
 
   public hasRight(right:string):boolean{
     return this.profileService.user && this.profileService.user.rights.indexOf(right)>-1;
+  }
+
+  public run():boolean{
+
+    return true;
   }
 }

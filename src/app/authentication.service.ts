@@ -1,23 +1,25 @@
 import {Injectable, OnInit} from '@angular/core';
-import {Http, Response} from "@angular/http";
 import {Broadcaster} from "./broadcaster";
+import {HttpClient, HttpResponse} from "@angular/common/http";
 
 @Injectable()
 export class AuthenticationService {
   readonly tokenKey = "currentToken";
 
-  constructor(private http: Http, private bus:Broadcaster) { }
+  constructor(private http: HttpClient, private bus:Broadcaster) { }
 
   login(username: string, password: string) {
-    return this.http.post('http://localhost:9000/login', { username: username, password: password })
-        .map((response: Response) => {
-          if(response.headers.has("Authorization")){
-            let token = response.headers.getAll("Authorization")[0];
+    return this.http.post<HttpResponse<void>>('http://localhost:9000/login', { username: username, password: password })
+        .map((response)=>{
+            if(response.headers.has("Authorization")){
+                return response.headers.getAll("Authorization")[0];
+            }
+            throw {};
+        }).catch(()=>{
+            throw "Failed to authorize";
+        }).do((token:string)=>{
             localStorage.setItem(this.tokenKey, token);
             this.bus.broadcast("user_login");
-            return token
-          }
-          throw "Failed to authorize";
         });
   }
 

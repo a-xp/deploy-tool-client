@@ -1,0 +1,46 @@
+<h3>Создание нового проекта</h3>
+
+<form>
+
+  <div class="form-group">
+    <label>Название проекта
+      <input type="text" class="form-control" name="name"/>
+    </label>
+    <small class="form-text text-muted">Короткое человекочитаемое название проекта</small>
+  </div>
+
+  <div class="form-group">
+    <label>Описание проекта
+      <textarea class="form-control" name="description"></textarea>
+    </label>
+    <small class="form-text text-muted">Короткое описание назначения проекта</small>
+  </div>
+
+  <div class="form-group">
+    <label>Символьный код проекта
+      <input type="text" class="form-control" name="code"/>
+    </label>
+    <small class="form-text text-muted">Уникальный символьный идентификатор проекта для машин</small>
+  </div>
+
+  <div class="form-group">
+    <div class="form-check">
+      <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="type" value="service">
+          REST Сервис
+      </label>
+      <small class="form-text text-muted">Постоянно запущен и слушает определенный порт</small>
+    </div>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input type="radio" class="form-check-input" name="type" value="cron">
+        Крон-задача
+      </label>
+      <small class="form-text text-muted">Конечная регулярно выполняемая задача</small>
+    </div>
+  </div>
+
+
+
+
+</form>

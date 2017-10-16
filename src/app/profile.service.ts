@@ -1,12 +1,11 @@
 import {Injectable, OnInit} from '@angular/core';
-import {AuthHttpService} from "./auth-http.service";
-import {Response} from "@angular/http";
 import {Broadcaster} from "./broadcaster";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable()
 export class ProfileService implements OnInit{
 
-  constructor(private http:AuthHttpService, private bus:Broadcaster) { }
+  constructor(private http:HttpClient, private bus:Broadcaster) { }
 
   ngOnInit(): void {
     this.bus.on("user_login").subscribe(this.loadProfile);
@@ -19,9 +18,9 @@ export class ProfileService implements OnInit{
 
   loadProfile() {
     if(localStorage.getItem("currentToken") && !this.user) {
-      return this.http.get('http://localhost:9000/profile/current').toPromise()
-          .then((response: Response) => {
-            this.user = response.json();
+      return this.http.get<User>('http://localhost:9000/profile/current').toPromise()
+          .then((response) => {
+            this.user = response;
             return this.user;
           });
     }

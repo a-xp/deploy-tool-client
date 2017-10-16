@@ -3,7 +3,7 @@ import {AlertService} from "../alert.service";
 
 @Component({
   selector: 'alert',
-  templateUrl: './alert.component.html'
+  template: `<div *ngIf="message" [ngClass]="{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error' }">{{message.text}}</div>`
 })
 export class AlertComponent implements OnInit {
 

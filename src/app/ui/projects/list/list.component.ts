@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {Project, ProjectService} from "../../project.service";
+import {Project, ProjectService} from "../../../project.service";
 
 @Component({
   selector: 'app-list',
-  templateUrl: './list.component.html'
+  templateUrl: 'list.component.html'
 })
-export class ListComponent implements OnInit {
+export class ProjectListComponent implements OnInit {
   public projects:Project[];
   public type = 'service';
-  public ff =2;
 
   constructor(private projectService:ProjectService) { }
 
@@ -16,5 +15,7 @@ export class ListComponent implements OnInit {
     this.projectService.getAll().then(list=>this.projects = list);
   }
 
-
+  createForm(){
+    location.href = '/projects/new';
+  }
 }

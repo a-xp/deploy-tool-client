@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
-import {AuthHttpService} from "./auth-http.service";
-import 'rxjs/add/operator/toPromise';
+import {HttpClient} from "@angular/common/http";
 
 @Injectable()
 export class BuildService {
 
-  constructor(private http:AuthHttpService) {
+  constructor(private http:HttpClient) {
   }
 
   public getBuilds(projectId:number):Promise<Build[]> {
-    return this.http.get("http://localhost:9000/projects/"+projectId+"/builds").toPromise()
-        .then(response=>response.json().map(b=>Build.fromJson(b)))
+    return this.http.get<Build[]>("http://localhost:9000/projects/"+projectId+"/builds").toPromise()
+        .then(response=>response.map(b=>Build.fromJson(b)))
         .catch(response=>Promise.reject(response.json().message));
   }
 
   public getQABuilds(projectId:number):Promise<Build[]> {
-    return this.http.get("http://localhost:9000/projects/"+projectId+"/qa-builds").toPromise()
-        .then(r=>r.json().map(b=>Build.fromJson(b)))
-        .catch(r=>{console.log(r);});
+    return this.http.get<Build[]>("http://localhost:9000/projects/"+projectId+"/qa-builds").toPromise()
+        .then(r=>{
+          if(!r)throw "invalid response";
+          return r.map(b=>Build.fromJson(b))
+        }).catch(r=>{console.log(r);}) as Promise<Build[]>;
   }
 
 }

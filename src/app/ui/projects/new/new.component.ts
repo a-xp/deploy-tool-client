@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-new',
-  templateUrl: './new.component.html'
+  templateUrl: 'new.component.html'
 })
-export class NewComponent implements OnInit {
+export class ProjectNewComponent implements OnInit {
 
   constructor() { }
 
