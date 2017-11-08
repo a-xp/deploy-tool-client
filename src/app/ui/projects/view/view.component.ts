@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {Build, BuildService} from "../../../build.service";
-import {Project, ProjectService} from "../../../project.service";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ProfileService} from "../../../profile.service";
 import {RunnerService, Runner} from "../../../runner.service";
-import {Instance, InstanceService} from "../../../instance.service";
+import {Project} from "../../../store/data/Project";
+import {Store} from "@ngrx/store";
+import {AppStore} from "../../../store/AppStore";
+import {Instance} from "../../../store/data/Instance";
+import {Build} from "../../../store/data/Build";
+import {uiActions} from "../../../store/actions/ui";
+import {selectCurrentProject} from "../../../store/process/ProjectEffects";
 
 @Component({
   selector: 'app-view',
@@ -12,29 +16,20 @@ import {Instance, InstanceService} from "../../../instance.service";
 })
 export class ProjectViewComponent implements OnInit {
 
-  public code:string;
   public project:Project;
   public runners:Runner[];
-  public instances:Instance[];
-  public builds:Build[];
-  public qaBuilds:Build[];
   public redmineIssuesUrl = 'http://redmine2.shoppinglive.local/issues/';
 
-  constructor(private route: ActivatedRoute, private buildService:BuildService, private projectService:ProjectService,
-    private profileService:ProfileService, private runnerService:RunnerService, private instanceService:InstanceService) { }
+  constructor(private route: ActivatedRoute, private store:Store<AppStore>, private router:Router,
+    private profileService:ProfileService, private runnerService:RunnerService) { }
 
   ngOnInit() {
-    this.code = this.route.snapshot.params["code"];
+    this.route.params.subscribe(params=>{
+      console.log("route change", params);
+      this.store.dispatch({type: uiActions.PROJECT_VIEW_CODE, value: params.code})
+    });
 
-    this.projectService.get(this.code).then(
-        p=>{
-          this.project = p;
-          this.buildService.getBuilds(this.project.id).then(l=>this.builds=l);
-          this.buildService.getQABuilds(this.project.id).then(l=>this.qaBuilds=l);
-          this.instanceService.getForProject(this.project.id).then(l=>this.instances=l);
-        }
-    );
-
+    this.store.select(selectCurrentProject).subscribe(project => this.project = project);
     this.runnerService.get().then(l=>this.runners=l);
   }
 
@@ -47,7 +42,10 @@ export class ProjectViewComponent implements OnInit {
   }
 
   public run():boolean{
-
     return true;
+  }
+
+  openParams() {
+    this.router.navigateByUrl('/projects/'+this.project.code+'/params')
   }
 }

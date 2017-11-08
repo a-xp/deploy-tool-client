@@ -1,46 +1,60 @@
 <h3>Создание нового проекта</h3>
 
-<form>
+<form #projectForm="ngForm">
 
   <div class="form-group">
-    <label>Название проекта
-      <input type="text" class="form-control" name="name"/>
-    </label>
-    <small class="form-text text-muted">Короткое человекочитаемое название проекта</small>
+    <label>Название проекта</label>
+    <input type="text" class="form-control" name="name" required minlength="5" maxlength="50" [(ngModel)]="model.name" #name="ngModel"/>
+    <div [hidden]="name.valid || name.pristine" class="alert alert-danger p-2 mt-1">от 5 до 50 символов</div>
+    <small class="form-text text-muted">Краткое человекопонятное название проекта</small>
   </div>
 
   <div class="form-group">
-    <label>Описание проекта
-      <textarea class="form-control" name="description"></textarea>
-    </label>
-    <small class="form-text text-muted">Короткое описание назначения проекта</small>
+    <label>Описание проекта</label>
+    <textarea class="form-control" name="description" id="desc" maxlength="1024" [(ngModel)]="model.description" #description></textarea>
+    <div [hidden]="description.valid || description.pristine" class="alert alert-danger p-2 mt-1">до 1024 символов</div>
+    <small class="form-text text-muted">Краткое описание назначения проекта</small>
   </div>
 
   <div class="form-group">
-    <label>Символьный код проекта
-      <input type="text" class="form-control" name="code"/>
-    </label>
+    <label>Символьный код проекта</label>
+    <input type="text" class="form-control" name="code" required minlength="3" maxlength="30" [(ngModel)]="model.code" #code/>
+    <div [hidden]="code.valid || code.pristine" class="alert alert-danger p-2 mt-1">от 3 до 30 символов</div>
     <small class="form-text text-muted">Уникальный символьный идентификатор проекта для машин</small>
   </div>
 
   <div class="form-group">
+    <div [hidden]="type.valid || type.pristine" class="alert alert-danger p-2 mt-1">Необходимо выбрать тип</div>
     <div class="form-check">
       <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="type" value="service">
+          <input type="radio" class="form-check-input" name="type" value="service" required [(ngModel)]="model.type" #type>
           REST Сервис
       </label>
       <small class="form-text text-muted">Постоянно запущен и слушает определенный порт</small>
     </div>
     <div class="form-check">
       <label class="form-check-label">
-        <input type="radio" class="form-check-input" name="type" value="cron">
+        <input type="radio" class="form-check-input" name="type" value="cron" required [(ngModel)]="model.type">
         Крон-задача
       </label>
       <small class="form-text text-muted">Конечная регулярно выполняемая задача</small>
     </div>
   </div>
 
+  <div class="form-group">
+    <label>Память JVM (Мб)</label>
+    <input type="number" class="form-control" name="memory" required min="75" max="512" [(ngModel)]="model.memory">
+  </div>
 
+  <div class="form-group">
+    <label>Сгенерировать код проекта</label>
+    <select class="form-control" name="archetype" [(ngModel)]="model.archetype">
+      <option value="">Нет</option>
+      <option value="minimal">Минимальный проект</option>
+      <option value="rest">Базовый REST Сервис</option>
+    </select>
+  </div>
 
+  <button type="submit" class="btn btn-primary" [disabled]="!projectForm.valid">Создать</button>
 
 </form>

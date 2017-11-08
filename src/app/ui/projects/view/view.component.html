@@ -1,18 +1,18 @@
 <div *ngIf="!project"><i class="fa fa-spinner fa-4x fa-spin"></i> Загрузка</div>
 <div *ngIf="project">
 
-  <h2 class="p-3">{{project.name}}</h2>
+  <h2 class="p-3">{{project.name}} <span class="pull-right"><button type="button" class="btn btn-sm btn-secondary" (click)="openParams()"><i class="fa fa-cog"></i></button></span> </h2>
   <small>{{project.description}}</small>
 
   <div class="card mb-2">
     <div class="card-header">Активные экземпляры</div>
     <div class="card-block">
 
-        <span class="card-text text-danger" *ngIf="!instances || !instances.length">Сервис не запущен</span>
+        <span class="card-text text-danger" *ngIf="!project.instances || !project.instances.length">Сервис не запущен</span>
 
-        <table *ngIf="instances && instances.length" class="table table-striped table-bordered">
+        <table *ngIf="project.instances && project.instances.length" class="table table-striped table-bordered">
           <tr><th>Сервер</th><th>Версия</th><th>PID</th><th>Порт</th><th>Статус</th><th></th></tr>
-          <tr *ngFor="let inst of instances"><td>{{inst.server}}</td><td class="text-primary">{{inst.version}}</td><td>{{inst.port?inst.port:'-'}}</td><td>{{inst.pid}}</td><td ngClass="{'text-success':inst.port>0, 'text-warning':!inst.port}">{{inst.port?(inst.uptime|timePeriod):'запускается'}}</td>
+          <tr *ngFor="let inst of project.instances"><td>{{inst.server}}</td><td class="text-primary">{{inst.version}}</td><td>{{inst.port?inst.port:'-'}}</td><td>{{inst.pid}}</td><td ngClass="{'text-success':inst.port>0, 'text-warning':!inst.port}">{{inst.port?(inst.uptime|timePeriod):'запускается'}}</td>
             <td> <button type="button" class="btn btn-sm btn-danger" *ngIf="hasRight('RUN_SERVICE')"><i class="fa fa-remove"></i> Остановить</button>
               <button type="button" class="btn btn-sm btn-secondary" *ngIf="hasRight('RUN_SERVICE') && inst.port"><i class="fa fa-refresh"></i> Обновить конфигурацию</button></td></tr>
         </table>
@@ -25,7 +25,7 @@
     <div class="card-block">
       <table class="table table-bordered table-striped">
         <tr><th>Версия</th><th>Дата</th><th>Автор</th><th>Комментарий</th><th></th></tr>
-        <tr *ngFor="let build of builds"><td>{{build.version}}</td><td>{{build.date|date:'yyyy-MM-dd HH:mm:ss'}}</td><td>{{build.author}}</td><td>
+        <tr *ngFor="let build of project.builds"><td>{{build.version}}</td><td>{{build.date|date:'yyyy-MM-dd HH:mm:ss'}}</td><td>{{build.author}}</td><td>
           {{build.message}}
           <ul class="list-unstyled">
             <li *ngFor="let task of build.features"><a target="_blank" [attr.href]="redmineIssuesUrl+task.id">{{task.name}}</a></li>
@@ -55,7 +55,7 @@
     <div class="card-block">
       <table class="table table-bordered table-striped">
         <tr><th>Код</th><th>Задачи</th><th></th></tr>
-        <tr *ngFor="let build of qaBuilds">
+        <tr *ngFor="let build of project.qaBuilds">
           <td>{{build.env}}</td>
           <td><ul class="list-unstyled">
             <li *ngFor="let task of build.features"><a target="_blank" [attr.href]="redmineIssuesUrl+task.id">#{{task.id}} {{task.name}}</a></li>

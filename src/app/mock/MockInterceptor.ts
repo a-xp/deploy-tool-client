@@ -7,6 +7,7 @@ import {runners} from "./data/runners";
 import {builds} from "./data/builds";
 import {qaBuilds} from "./data/qa-builds";
 import {instances} from "./data/instances";
+import {projectParams} from "./data/params";
 /**
  * Created by rkhabibullin on 16.10.2017.
  */
@@ -16,6 +17,7 @@ export class MockInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         let url = new URL(req.url);
+        console.log('requesting '+req.method+' '+url.pathname);
         switch(url.pathname){
             case "/profile/current":
                 return this.response(profileCurrent);
@@ -33,6 +35,8 @@ export class MockInterceptor implements HttpInterceptor {
                 return this.response(qaBuilds);
             case "/projects/17/instances":
                 return this.response(instances);
+            case "/projects/17/params":
+                return this.response(projectParams);
             default:
                 console.log("requested unknown url "+url.pathname);
                 return this.response(null, 404);

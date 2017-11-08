@@ -1,6 +1,8 @@
 import {Injectable, OnInit} from '@angular/core';
 import {Broadcaster} from "./broadcaster";
 import {HttpClient} from "@angular/common/http";
+import {User} from "./store/data/User";
+import {environment} from "../environments/environment";
 
 @Injectable()
 export class ProfileService implements OnInit{
@@ -18,7 +20,7 @@ export class ProfileService implements OnInit{
 
   loadProfile() {
     if(localStorage.getItem("currentToken") && !this.user) {
-      return this.http.get<User>('http://localhost:9000/profile/current').toPromise()
+      return this.http.get<User>(environment.apiUrl+'/profile/current').toPromise()
           .then((response) => {
             this.user = response;
             return this.user;
@@ -29,7 +31,3 @@ export class ProfileService implements OnInit{
 }
 
 
-export class User {
-  public login: string;
-  public rights: Array<string>;
-}

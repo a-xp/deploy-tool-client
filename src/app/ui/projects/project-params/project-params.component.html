@@ -1,0 +1,43 @@
+<div *ngIf="!project || !project.params"><i class="fa fa-spinner fa-4x fa-spin"></i> Загрузка</div>
+<div *ngIf="project && project.params">
+    <h4>Настройки проекта {{project.name}}</h4>
+
+    <form #paramsForm="ngForm" (submit)="save(paramsForm)">
+
+        <div class="form-group">
+            <label>Память</label>
+            <input type="number" class="form-control" name="mem" required [(ngModel)]="project.params.mem" #mem="ngModel"/>
+            <div [hidden]="mem.valid || mem.pristine" class="alert alert-danger p-2 mt-1">от 50 до 1024 Мб</div>
+            <small class="form-text text-muted">Выделяемая для процесса память</small>
+        </div>
+
+        <div class="form-group">
+            <label>Текущая версия</label>
+            <input type="text" class="form-control" name="defaultVersion" [(ngModel)]="project.params.defaultVersion" #defaultVersion="ngModel"/>
+            <small class="form-text text-muted">Запускаемая по-умолчанию версия</small>
+        </div>
+
+        <div class="form-group">
+            <label>Дополнительные параметры запуска</label>
+            <input type="text" class="form-control" name="additionalArgs" [(ngModel)]="project.params.additionalArgs" #additionalArgs="ngModel"/>
+            <small class="form-text text-muted">Дополнительные параметры для запуска Java</small>
+        </div>
+
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" class="form-check-input" name="autoReload" [(ngModel)]="project.params.autoReload">
+                Автообновление конфигурации
+            </label>
+        </div>
+
+        <div class="form-check" *ngIf="project.type=='service'">
+            <label class="form-check-label">
+                <input type="checkbox" class="form-check-input" name="autoRun" [(ngModel)]="project.params.autoRun">
+                Автозагрузка
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!paramsForm.valid">Записать</button>
+        <button type="button" class="btn btn-secondary" (click)="cancel()">Отменить</button>
+    </form>
+</div>
